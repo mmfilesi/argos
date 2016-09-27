@@ -1,0 +1,20 @@
+{
+  "name": "argos",
+  "description": "light frame in js vanilla",
+  "main": "index.html",
+  "authors": [
+    "mmfilesi"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "q": "1.0.1"
+  }
+}

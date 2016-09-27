@@ -1,0 +1,27 @@
+{
+  "name": "argos",
+  "version": "1.0.0",
+  "description": "light frame in js vanilla",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mmfilesi",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.14.0",
+    "bower": "^1.7.9",
+    "browser-sync": "^2.16.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-clean": "^0.3.2",
+    "gulp-cli": "^1.2.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-imagemin": "^3.0.3",
+    "gulp-inject": "^4.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-useref": "^3.1.2",
+    "gulp-util": "^3.0.7"
+  }
+}
