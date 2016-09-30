@@ -9,28 +9,46 @@ const globals = (function() {
   const module    = {};
   const self      = module;
 
-  module.allRoutes  = {};
+  module.allStates  = [];
   module.allTexts   = {};
 
-  module.getRoutes = ()=> {
-    return self.allRoutes;
+  module.currentState = {
+		'state': 'main',
+  	'section': ''
+	};
+
+  module.getAllStates = ()=> {
+    return self.allStates;
   };
 
-  module.loadRoutes = ()=> {
+  module.loadAllStates = ()=> {
     let instanceRest = new ApiRest();
     let deferred     = Q.defer();
-    let uri          = './shell/theme/routes.json';;
+    let uri          = './shell/theme/states.json';;
 
     instanceRest.getResource(uri).then(
       (data)=> {
-        self.allRoutes = data;
+        self.allStates = data.states;
         deferred.resolve(data);
       },
       (error) => {
-        log.error('error get routes: '+ error);
+        log.error('error get states: '+ error);
         deferred.reject();
       });
     return deferred.promise;
+  };
+
+  module.setCurrentState = (_state_, _section_)=> {
+    if ( !_state_) {
+      log.warning('dont set state if stage is not defined');
+      return;
+    }
+    self.currentState.state    = _state_;
+    self.currentState.section  =  _section_ ? _section_ : '';
+  };
+
+  module.getCurrentState = ()=> {
+    return self.currentState;
   };
 
   module.getTexts = ()=> {
@@ -56,8 +74,10 @@ const globals = (function() {
   };
 
   return {
-    getRoutes:    module.getRoutes,
-    loadRoutes:   module.loadRoutes,
+    getAllStates:    module.getAllStates,
+    loadAllStates:   module.loadAllStates,
+    getCurrentState: module.getCurrentState,
+    setCurrentState: module.setCurrentState,
     getTexts:     module.getTexts,
     loadTexts:    module.loadTexts
   };

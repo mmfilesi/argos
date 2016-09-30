@@ -40,7 +40,7 @@ const bootstrap = (function() {
   /* Place here all request ajax as promisses are necessarily needed to start the applications */
   module.loadMainData = ()=> {
     let deferred     = Q.defer();
-    let allPromisses = [globals.loadTexts(), globals.loadRoutes()];
+    let allPromisses = [globals.loadTexts(), globals.loadAllStates()];
 
     Q.all(allPromisses).then( (results)=> {
       log.success('main data loaded');
@@ -54,24 +54,22 @@ const bootstrap = (function() {
   };
 
   module.initProxy = ()=> {
-    let configRoutes  = config.getRoutes()
-    let forceEntry    = config.getRoutes().forceEntry;
+    let configRoutes  = config.getOptionsState()
     let location      = window.location.pathname !== '/' ? window.location.pathname.split('/').pop() : '';
     let hash          = window.location.hash ? window.location.hash.replace('#', '') : '';
     let state         = hash ? hash : location ? location : false;
-//
-    /* OJO: esto está mal
 
-    globals.getRoutes().then( (routes)=> {
-      if ( configRoutes.forceEntry ) {
-        router.stateGo(configRoutes.defaultState);
+    /* Inicializamos el router */
+    router.init();
 
-      } else if ( state && router.stateIsDefined(state) ) {
-        router.stateGo(state);
-      } else {
-        router.stateGo('main');
-      }
-    }); */
+    /* Redirigimos donde toque */
+    if ( configRoutes.forceEntry ) {
+      router.stateGo(configRoutes.defaultState);
+    } else if ( state && router.stateIsDefined(state) ) {
+      router.stateGo(state);
+    } else {
+      router.stateGo('main');
+    }
   };
 
   return {

@@ -17,9 +17,11 @@
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+    <section id="argos-main-stage"></section>
 
     <!-- build:js ./shell/vendor/all-libraries.js -->
     <script src="./shell/vendor/q/q.js"></script>
+    <script src="./shell/vendor/handlebars/handlebars.js"></script>
     <!-- endbuild -->
 
      <!-- build:js ./shell/argos/argos.min.js -->
@@ -29,16 +31,21 @@
     <script src="./shell/argos/argos-log.js"></script>
     <script src="./shell/argos/argos-rest-utils.js"></script>
     <script src="./shell/argos/argos-api-rest.js"></script>
-
+    <script src="./shell/argos/argos-router.js"></script>
+    <script src="./shell/argos/argos-views.js"></script>
     <!-- TODO -->
-      <script src="./shell/argos/api-router.js"></script>
+
       <script src="./shell/argos/api-msg.js"></script>
+<!-- TODO -->
+
     <!-- endbuild -->
 
 
     <script src="./shell/theme/app.js" ></script>
- <script>
 
-</script>
+    <!-- dont remove -->
+    <div id ="argos-scripts-container"></div>
+    <div id ="argos-templates-container"></div>
+
   </body>
 </html>

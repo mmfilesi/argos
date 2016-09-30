@@ -12,9 +12,7 @@ const config = (function() {
 		'lang': 'en_En'
   };
 
-	module.route = {
-		'stage': '',
-  	'section': '',
+	module.optionsState = {
     'forceEntry': false,
     'defaultState': 'main'
 	};
@@ -56,23 +54,18 @@ const config = (function() {
     if ( data.rest.hasOwnProperty('specialCodes') ) {
       restUtils.setSpecialCodes(data.rest.specialCodes);
     }
+    if (  data.hasOwnProperty('optionsState') && data.optionsState.hasOwnProperty('forceEntry') ) {
+      self.optionsState.forceEntry    = data.optionsState.forceEntry;
+      self.optionsState.defaultState  = data.optionsState.defaultState;
+    }
+  };
+
+  module.getOptionsState = () => {
+    return self.optionsState;
   };
 
   module.getServiceWorkers = () => {
     return self.serviceWorkers;
-  };
-
-  module.setRoute = (_stage_, _section_)=> {
-    if ( !_stage_) {
-      log.warning('dont set route if stage is not defined');
-      return;
-    }
-    self.route.stage    = _stage_;
-    self.route.section  =  _section_ ?  _section_ : '';
-  };
-
-  module.getRoutes = ()=> {
-    return self.route;
   };
 
   module.getEnvironment = ()=> {
@@ -85,8 +78,7 @@ const config = (function() {
 
   return {
     init:               module.init,
-    setRoute:           module.setRoute,
-    getRoutes:          module.getRoutes,
+    getOptionsState:    module.getOptionsState,
     getEnvironment:     module.getEnvironment,
     getLang:            module.getLang,
     getServiceWorkers:  module.getServiceWorkers

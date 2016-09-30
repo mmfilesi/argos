@@ -3,7 +3,7 @@
     "environment": "develop",
     "lang": "en_En"
   },
-  "route": {
+  "optionsState": {
     "forceEntry": false,
     "defaultState": "main"
   },

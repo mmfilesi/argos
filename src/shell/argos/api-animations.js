@@ -1,16 +1,8 @@
-/**
- * @namespace animations
- * @description Module for work with animations (css)
- */
-
-/*eslint-disable no-unused-vars*/
-var animations = (function() {
-/*eslint-enable no-unused-vars*/
-
   var module = {
 
     /**
-    * @memberof animations#
+    * @memberof classToClass#
+    * @method
     * @name classToClass
     * @param {string} idContainer id node to animate
     * @param {string} content content to insert in node

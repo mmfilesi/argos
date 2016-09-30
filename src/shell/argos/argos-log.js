@@ -35,11 +35,18 @@ const log = (function() {
     }
   };
 
+  module.table = (msg)=> {
+    if ( msg && environment !== 'production' ) {
+      console.table(msg);
+    }
+  };
+
   return {
     success:  module.success,
     log:      module.log,
     warning:  module.warning,
-    error:    module.error
+    error:    module.error,
+    table:    module.table
   };
 
 })();

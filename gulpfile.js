@@ -12,6 +12,8 @@ const imagemin          = require('gulp-imagemin');
 const clean             = require('gulp-clean');
 const gutil             = require('gulp-util');
 const useref            = require('gulp-useref');
+const babel             = require('gulp-babel');
+const jsdoc             = require('gulp-jsdoc3');
 
 /* ====================================
   Conts && Options
@@ -36,6 +38,7 @@ const optionsServer = {
 };
 
 
+
 /* ====================================
   Paths
 ==================================== */
@@ -45,7 +48,7 @@ const baseDist    = './dist/';
 const pathsSrc    = {};
 const pathsDist   = {};
 
-pathsDist.theme     = baseDist + 'theme/';
+pathsDist.theme     = baseDist + 'shell/theme/';
 
 pathsSrc.core       = baseSrc + 'shell/argos/**/argos*.js';
 pathsDist.core      = baseDist + 'shell/argos/';
@@ -81,12 +84,47 @@ pathsSrc.vendor     = [
 
 pathsDist.vendor    = baseDist + 'shell/vendor';
 
-// todo: pathsSrc.sass        = 'sass/**/*.sass';
-
 /* ====================================
   Tasks
 ==================================== */
+	//Whatever build process' go here.
+//   var jsdoc = require('gulp-jsdoc');
+//   gulp.src("./src/*.js").pipe(jsdoc("./documentation"));//Simply building docs
 
+
+
+gulp.task('doc', (done)=> {
+    var options = {
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "opts": {
+    "destination": "./docs/gen"
+  }
+}
+/*
+,
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": true
+    },
+    "path": "ink-docstrap",
+    "theme": "cerulean",
+    "navType": "vertical",
+    "linenums": true,
+    "dateFormat": "MMMM Do YYYY, h:mm:ss a"
+  }
+  */
+
+  gulp.src(['README.md', './src/shell/argos/**/*.js'], options)
+    .pipe(jsdoc());
+   done();
+});
 
 /* ========================
   task - builder
@@ -101,11 +139,12 @@ pathsDist.vendor    = baseDist + 'shell/vendor';
   gulp.task('buildCore', (done)=> {
     gulp.src(pathsSrc.core)
       .pipe(sourcemaps.init())
+      .pipe(babel() )
       .pipe( concat('argos.min.js', optionsConcat) )
       .pipe( ENVIROMENT === 'production' ? uglify(optionsUglify) :  gutil.noop() )
       .pipe(sourcemaps.write('./'))
       .pipe( gulp.dest(pathsDist.core) );
-    done();
+      done()
   });
 
   gulp.task('buildIndex', (done)=> {
@@ -115,20 +154,22 @@ pathsDist.vendor    = baseDist + 'shell/vendor';
       done();
   });
 
+  gulp.task('buildConfigFiles', (done)=> {
+    gulp.src(pathsSrc.configFiles)
+      .pipe(gulp.dest(pathsDist.theme));
+     done();
+  });
+
   gulp.task('buildViews', (done)=> {
     gulp.src(pathsSrc.views)
       .pipe(gulp.dest(pathsDist.views));
-
-    gulp.src(pathsSrc.configFiles)
-      .pipe(gulp.dest(pathsDist.theme));
-
      done();
   });
 
   gulp.task('buildMocks', (done)=> {
     if ( ENVIROMENT !== 'production' ) {
-      gulp.src(pathsSrc.mocks)
-        .pipe(gulp.dest(pathsDist.mocks));
+      gulp.src('./src/mocks/**/*.json')
+        .pipe(gulp.dest('./dist/mocks/'));
     }
      done();
   });
@@ -150,13 +191,14 @@ pathsDist.vendor    = baseDist + 'shell/vendor';
   #task - builder
 ======================== */
 
-gulp.task('build', gulp.parallel(
+gulp.task('build', gulp.series(
   'buildRootFiles',
   'buildCore',
   'buildIndex',
   'buildViews',
   'buildVendor',
-  //'buildMocks',
+  'buildConfigFiles',
+  'buildMocks',
   //'buildImages',
   (done)=> {
     done();
@@ -168,8 +210,7 @@ gulp.task('clean', (done)=> {
   done();
 });
 
-gulp.task('default', gulp.series('clean', 'build'), (done)=> {
+gulp.task('default', gulp.series('build'), (done)=> {
   gutil.log('Gulp is running!');
   done();
 });
-

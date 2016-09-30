@@ -1,0 +1,32 @@
+{
+  "states": [
+    {
+      "state": "main",
+      "url": "main",
+      "entry": "mainController.init",
+      "controllers": ["main-controller"],
+      "templates": ["main-template"]
+    },
+    {
+      "state": "error",
+      "url": "error",
+      "entry": "errorController.init",
+      "controllers": ["error-controller"],
+      "templates": ["error-template"]
+    },
+    {
+      "state": "foo",
+      "url": "fooState",
+      "entry": "fooController.init",
+      "controllers": ["foo-controller"],
+      "templates": ["foo-template"]
+    },
+    {
+      "state": "bar",
+      "url": "barState",
+      "entry": "barController.init",
+      "controllers": ["bar-controller"],
+      "templates": ["bar-template"]
+    }
+  ]
+}
