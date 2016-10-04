@@ -37,10 +37,10 @@ const bootstrap = (function() {
     }
   };
 
-  /* Place here all request ajax as promisses are necessarily needed to start the applications */
+  /* Place here all request ajax as promisses are necessarily to start the applications */
   module.loadMainData = ()=> {
     let deferred     = Q.defer();
-    let allPromisses = [globals.loadTexts(), globals.loadAllStates()];
+    let allPromisses = [globals.loadTexts(), globals.loadAllStates(), globals.loadRest()];
 
     Q.all(allPromisses).then( (results)=> {
       log.success('main data loaded');

@@ -1,0 +1,19 @@
+{
+  "generalData": {
+    "baseUrl": {
+      "mock": "./mocks/",
+      "develop": "./mocks/",
+      "production": "https://restcountries.eu/rest/v1/",
+      "unitTest":"./mocks/",
+      "e2eTest": "https://restcountries.eu/rest/v1/"
+    },
+    "type": {
+      "mock": ".json",
+      "develop": ".json",
+      "production": ""
+    }
+  },
+  "endPoints": {
+    "getCapital": "countries"
+  }
+}

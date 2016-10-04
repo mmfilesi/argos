@@ -9,8 +9,9 @@ const globals = (function() {
   const module    = {};
   const self      = module;
 
-  module.allStates  = [];
-  module.allTexts   = {};
+  module.allStates    = [];
+  module.allTexts     = {};
+  module.allEndPoints = {};
 
   module.currentState = {
 		'state': 'main',
@@ -24,7 +25,7 @@ const globals = (function() {
   module.loadAllStates = ()=> {
     let instanceRest = new ApiRest();
     let deferred     = Q.defer();
-    let uri          = './shell/theme/states.json';;
+    let uri          = './shell/theme/states.json';
 
     instanceRest.getResource(uri).then(
       (data)=> {
@@ -73,13 +74,48 @@ const globals = (function() {
     return deferred.promise;
   };
 
+  module.loadRest = ()=> {
+    let instanceRest = new ApiRest();
+    let deferred     = Q.defer();
+    let lang         = config.getLang();
+    let uri          = './shell/theme/rest.json';
+
+    instanceRest.getResource(uri).then(
+      (data)=> {
+        self.prepareRest(data);
+        deferred.resolve();
+      },
+      (error) => {
+        log.error('error load config rest: '+ error);
+        deferred.reject();
+      });
+    return deferred.promise;
+  };
+
+  module.prepareRest = (data)=> {
+    let environment = config.getEnvironment();
+    let prefix      = data.generalData.baseUrl[environment];
+    let suffix      = data.generalData.type[environment];
+
+    for (let prop in data.endPoints) {
+      self.allEndPoints[prop] = prefix + data.endPoints[prop] + suffix;
+    }
+
+  };
+
+  module.getRest = ()=> {
+    return self.allEndPoints;
+  };
+
   return {
-    getAllStates:    module.getAllStates,
-    loadAllStates:   module.loadAllStates,
-    getCurrentState: module.getCurrentState,
-    setCurrentState: module.setCurrentState,
-    getTexts:     module.getTexts,
-    loadTexts:    module.loadTexts
+    getAllStates:     module.getAllStates,
+    loadAllStates:    module.loadAllStates,
+    getCurrentState:  module.getCurrentState,
+    setCurrentState:  module.setCurrentState,
+    getTexts:         module.getTexts,
+    loadTexts:        module.loadTexts,
+    loadRest:         module.loadRest,
+    getRest:          module.getRest
   };
 
 })();

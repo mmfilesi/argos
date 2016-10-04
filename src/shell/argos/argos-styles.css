@@ -1,19 +1,21 @@
-.arrakis-hide {
+.argos-hide {
   display: none;
 }
 
-.fade {
+.argos-fade {
   transition: all 1s ease;
   opacity: 1;
 }
 
-.fade-in {
+.argos-fade-in {
 	opacity: 1;
 }
 
-.fade-out {
+.argos-fade-out {
 	opacity: 0;
 }
+
+/* todos */
 
 #msgModal {
   padding-left:10px;

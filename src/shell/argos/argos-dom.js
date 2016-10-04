@@ -1,115 +1,114 @@
 /**
- * @namespace Ak
+ * @namespace Ar
  * @description Lite module for DOM manipulating
  * methods (work in progress)
  *
   *  **text()** inserta una cadena de texto en los elementos seleccionados
   *  ```javascript
-    Ak('.foo').text('bazinga');
+    Ar('.foo').text('bazinga');
     ```
 
   *  **html()** inserta una cadena de html en los elementos seleccionados. Su uso es obligatorio cuando se inserta html derivado del mundo exterior de la aplicación, ya que previene la inserción de scripts.
   *  ```javascript
-    Ak('.foo').html('bazinga');
+    Ar('.foo').html('bazinga');
     ```
 
   *  **hide()** oculta uno o más elementos
   * ```javascript
-    Ak('.foo').hide();
+    Ar('.foo').hide();
     ```
 
   * **show()** muestra uno o más elementos
   *  ```javascript
-    Ak('.foo').hide();
+    Ar('.foo').hide();
     ```
 
   *  **toggle()** togglea la visibilidad de uno o más elementos
   * ```javascript
-    Ak('.foo').hide();
+    Ar('.foo').hide();
     ```
 
   *  **addClass()** añade una clase
   * ```javascript
-    Ak('.foo').addClass('clase');
+    Ar('.foo').addClass('clase');
     ```
 
   *  **removeClass()** elimina una clase
   * ```javascript
-    Ak('.foo').removeClass('clase');
+    Ar('.foo').removeClass('clase');
     ```
 
   *  **toggleClass()** togglea una clase
   * ```javascript
-    Ak('.foo').toggleClass('clase');
+    Ar('.foo').toggleClass('clase');
     ```
 
   *  **setStyle()** cambia un estilo (en línea)
   * ```javascript
-    Ak('.foo').setStyle('color', 'red');
+    Ar('.foo').setStyle('color', 'red');
     ```
 
   *  **remove()** elimina un nodo (y sus listeners asociados)
   * ```javascript
-    Ak('.foo').remove();
+    Ar('.foo').remove();
     ```
 
   *  **onRender()** chequea que un nodo esté renderizado
   * ```javascript
-    Ak().onRender('#foo');
+    Ar().onRender('#foo');
     ```
 */
 
 (function () {
 
-  var ArrakisDomModule = function (params) {
-    var selector = document.querySelectorAll(params),
-      i = 0;
+  const argosDom = function (params) {
+    let selector = document.querySelectorAll(params);
+    let i = 0;
     this.length = selector.length;
 
     for (; i < this.length; i++) {
       this[i] = selector[i];
     }
-
     return this;
   };
 
-  var Ak = function (params) {
-    return new ArrakisDomModule(params);
+  const Ar = function(params) {
+    return new argosDom(params);
   };
 
-  var methods = {};
+  const methods = {};
 
   methods.self = this;
 
   methods.hide = function() {
-    var len = this.length;
+    let len = this.length;
 
     while (len--) {
-      this[len].classList.add('arrakis-hide');
+      this[len].classList.add('argos-hide');
     }
     return this;
   };
 
   methods.show = function() {
-    var len = this.length;
+    let len = this.length;
 
     while (len--) {
-      this[len].classList.remove('arrakis-hide');
+      this[len].classList.remove('argos-hide');
     }
     return this;
   };
 
   methods.toggle = function() {
-    var len = this.length;
+    let len = this.length;
 
     while (len--) {
-      this[len].classList.toggle('arrakis-hide');
+      this[len].classList.toggle('argos-hide');
     }
     return this;
   };
 
   methods.addClass = function(classAdd) {
-    var len = this.length;
+    let len = this.length;
 
     if ( classAdd ) {
       while (len--) {
@@ -120,7 +119,7 @@
   };
 
   methods.removeClass = function(classRemove) {
-    var len = this.length;
+    let len = this.length;
 
     if ( classRemove ) {
       while (len--) {
@@ -131,7 +130,7 @@
   };
 
   methods.toggleClass = function(classToggle) {
-    var len = this.length;
+    let len = this.length;
 
     if (classToggle ) {
       while (len--) {
@@ -142,7 +141,7 @@
   };
 
   methods.setStyle = function(style, value) {
-    var len = this.length;
+    let len = this.length;
 
     if ( style && value ) {
       while (len--) {
@@ -153,7 +152,7 @@
   };
 
   methods.fade = function() {
-    var len = this.length;
+    let len = this.length;
 
     while (len--) {
       this[len].classList.add('fade');
@@ -165,7 +164,7 @@
   };
 
   methods.text = function(text) {
-    var len = this.length;
+    let len = this.length;
 
     while (len--) {
       this[len].textContent = text;
@@ -175,7 +174,7 @@
   };
 
   methods.html = function(content) {
-    var len = this.length;
+    let len = this.length;
 
     if ( content.indexOf('script') !== -1 ) {
       content = 'scripts are not allowed';
@@ -189,7 +188,7 @@
   };
 
   methods.remove = function() {
-    var len = this.length;
+    let len = this.length;
 
     while (len--) {
       if ( this[len].parentNode ) {
@@ -200,19 +199,19 @@
   };
 
   methods.onRender = function(node) {
-    var deferred = Q.defer();
-    var timer = {
+    let deferred = Q.defer();
+    const timer = {
 
       interval: function() {
-        var self = this;
-        var timer = setTimeout(function() {
-          clearTimeout(timer);
+        let self = this;
+        let timeCount = setTimeout(function() {
+          clearTimeout(timeCount);
           self.init(node);
         }, 100);
       },
 
       init: function(node) {
-        var nodeToCheck = document.querySelectorAll(node);
+        let nodeToCheck = document.querySelectorAll(node);
 
         if ( !nodeToCheck || nodeToCheck.length === 0 ) {
           this.interval(node);
@@ -228,9 +227,9 @@
   };
 
   methods.isEmpty = function(obj) {
-    var object = obj;
+    let object = obj;
 
-    for(var prop in object) {
+    for(let prop in object) {
       if(object.hasOwnProperty(prop)){
         return false;
       }
@@ -240,19 +239,19 @@
   };
 
   methods.openModal = function(idModal) {
-    var modal = document.getElementById(idModal);
+    let modal = document.getElementById(idModal);
+
     modal.setAttribute('show','show');
   };
-
 
   methods.closeModal = function() {
     this[0].setAttribute('show','hidden');
   };
 
-  Ak.fn = ArrakisDomModule.prototype = methods;
+  Ar.fn = argosDom.prototype = methods;
 
-  if ( !window.Ak ) {
-    window.Ak = Ak;
+  if ( !window.Ar ) {
+    window.Ar = Ar;
   }
 
 })();

@@ -2,7 +2,7 @@
 
 /**
  * @namespace views
- * @description manage templates and controllers lazy load.
+ * @description manage templates and controllers lazy load. argos-views-utils.js
  */
 const views = (function() {
 
@@ -20,6 +20,7 @@ const views = (function() {
     let scriptsContainer  = document.getElementById('argos-scripts-container');
     let tplsContainer     = document.getElementById('argos-templates-container');
     let allPromisses      = [];
+    let currentCtrl       = '';
 
     self.ctrlsLoaded    = [];
     self.tplsLoaded     = [];
@@ -28,9 +29,19 @@ const views = (function() {
     if ( !scriptsContainer || !tplsContainer ) {
       log.error('nodes for lazy load are mandatory');
     }
-    scriptsContainer.innerHTML = '';
-    tplsContainer.innerHTML    = '';
-    self.stateSelected         = router.findRouteByState(state);
+
+    /* todo: llevar a un método empty() de argosDom */
+    while (scriptsContainer.firstChild) {
+      currentCtrl = scriptsContainer.firstChild.getAttribute('data-ctrl');
+      if ( window.hasOwnProperty(currentCtrl) ) {
+        delete window[currentCtrl];
+      }
+      scriptsContainer.removeChild(scriptsContainer.firstChild);
+    }
+    while (tplsContainer.firstChild) {
+      tplsContainer.removeChild(tplsContainer.firstChild);
+    }
+    self.stateSelected = router.findRouteByState(state);
 
     len = self.stateSelected.controllers.length;
     while(len--) {
@@ -57,19 +68,33 @@ const views = (function() {
     return deferred.promise;
   };
 
+  module.getNameController  = (controller)=> {
+    let ctrlName = controller.split('-');
+    let name = ctrlName.shift();
+    let i = 0;
+    let len = ctrlName.length;
+
+    for (; i<len; i++) {
+      name += ctrlName[i].charAt(0).toUpperCase() + ctrlName[i].slice(1);
+    }
+    return name;
+  };
+
   module.loadControllers = (state, controller)=> {
-    let nodeScript = document.createElement('script');
+    let nodeScript      = document.createElement('script');
+    let controllerName  = self.getNameController(controller);
 
     nodeScript.type   = 'text\/javascript';
-    nodeScript.src    = './views/' +  state + '/' + controller + '.js';
+    nodeScript.src    = './shell/theme/views/' +  state + '/' + controller + '.js';
     nodeScript.id     = 'js-' + controller;
     nodeScript.onload = self.addCtrlLoaded(controller);
     document.getElementById('argos-scripts-container').appendChild(nodeScript);
+    nodeScript.setAttribute('data-ctrl', controllerName);
   };
 
   module.loadTemplates = (state, template)=> {
     let req = new XMLHttpRequest();
-    let templatePath = './views/' +  state + '/' + template + '.html';
+    let templatePath = './shell/theme/views/' +  state + '/' + template + '.html';
 
     req.open('GET', templatePath, true);
 
