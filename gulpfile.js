@@ -99,7 +99,7 @@ gulp.task('doc', (done)=> {
     "allowUnknownTags": true
   },
   "opts": {
-    "destination": "./docs/gen"
+    "destination": "./docs/"
   }
 }
 /*

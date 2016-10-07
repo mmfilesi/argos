@@ -59,7 +59,7 @@ const forms = (function() {
   * @memberof forms#
   * @method
   * @name getValue
-  * @param {(string | object} _node_ - The id element or the element of form.
+  * @param {string | object} _node_ - The id element or the element of form.
   * @return {string |array} The form element value.
   */
   module.getValue = (_node_)=> {

@@ -2,7 +2,7 @@
 
 /**
  * @namespace msg
- * @description
+ * @description Gestiona los mensajes que se le muestran al usuario
  */
 const msg = (function() {
 
