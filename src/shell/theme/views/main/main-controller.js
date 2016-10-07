@@ -19,6 +19,12 @@
     module.init = ()=> {
       log.success('main controller :: init');
       self.loadTemplate();
+
+      let miObjeto = {}
+      let miPropiedad = Symbol("miSimbolo");
+      miObjeto[miPropiedad] = 'foo';
+
+      console.log(miObjeto)
     };
 
     module.loadTemplate = ()=> {

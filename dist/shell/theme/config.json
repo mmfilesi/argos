@@ -1,0 +1,33 @@
+{
+  "generalData": {
+    "environment": "develop",
+    "lang": "en_En"
+  },
+  "optionsState": {
+    "forceEntry": false,
+    "defaultState": "main"
+  },
+  "rest": {
+    "restOptions": {
+      "type": "application/json",
+      "headers": [{
+        "key": "GS-AUTH-TOKEN",
+        "value": "pending"
+      }],
+      "showPreload": true,
+      "errorInterceptor": true
+    },
+    "specialCodes": {
+      "success": "san-200",
+      "notFound": "san-404",
+      "notAuth": "san-403",
+      "serverError": "san-500",
+      "tokenExpiration": "401",
+      "tokenSanExpiration": "san-441",
+      "tokenCorporateExpiration": "san-442"
+    }
+  },
+  "serviceWorkers": {
+    "active": false
+  }
+}
