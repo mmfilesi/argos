@@ -1,2 +1,2 @@
 # argos
-personal js framework
+js framework
