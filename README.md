@@ -3,7 +3,7 @@ js framework
 
 **version: 0.0.5**
 
-[Doc.](https://mmfilesi.github.io/argos/index.html)
+[Documentación (sin terminar)](https://mmfilesi.github.io/argos/index.html)
 
 ### RoadMap
 
