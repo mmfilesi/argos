@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Namespace: router</title>
+	<title>Documentation Namespace: forms</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -65,13 +65,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Namespace: router</h1>
+	<h1 class="page-title">Namespace: forms</h1>
 <section>
 
 <header>
     
         <h2>
-        router
+        forms
         </h2>
         
     
@@ -82,7 +82,8 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>proxy routes</p></div>
+            <div class="description"><p>module for work with forms.
+todo: show error server</p></div>
         
 
         
@@ -148,23 +149,69 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="addListeners"><span class="type-signature"></span>addListeners()</h4>
+    <h4 class="name" id="_getMultiSelectValues"><span class="type-signature"></span>_getMultiSelectValues(_node_)</h4>
     
     
 </dt>
 <dd>
 
     
-    <div class="description">
-        <p>add listener to hash (#) change</p>
-    </div>
-    
 
     
 
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_node_</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The element multi-select of form.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -221,6 +268,10 @@
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    <p>The multi-select value.</p>
+</div>
+
 
 
 <dl>
@@ -229,7 +280,7 @@
     </dt>
     <dd>
         
-<span class="param-type">undefined</span>
+<span class="param-type">array</span>
 
 
 
@@ -246,24 +297,72 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="checkIsSupported"><span class="type-signature"></span>checkIsSupported()</h4>
+    <h4 class="name" id="getValue"><span class="type-signature"></span>getValue(_node_)</h4>
     
     
 </dt>
 <dd>
 
     
-    <div class="description">
-        <p>check if browser can manage history and pushState,
-necessary for the system router.</p>
-    </div>
-    
 
     
 
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_node_</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id element or the element of form.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -320,6 +419,10 @@ necessary for the system router.</p>
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    <p>The form element value.</p>
+</div>
+
 
 
 <dl>
@@ -328,7 +431,10 @@ necessary for the system router.</p>
     </dt>
     <dd>
         
-<span class="param-type">boolean</span>
+<span class="param-type">string</span>
+|
+
+<span class="param-type">array</span>
 
 
 
@@ -345,7 +451,7 @@ necessary for the system router.</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="init"><span class="type-signature"></span>init()</h4>
+    <h4 class="name" id="getValues"><span class="type-signature"></span>getValues(idForm)</h4>
     
     
 </dt>
@@ -353,7 +459,8 @@ necessary for the system router.</p>
 
     
     <div class="description">
-        <p>init states listeners</p>
+        <p>return pair key-value for each input.
+The inputs need have the class 'js-itemForm' and, recommended, an atribute called 'data-key'.</p>
     </div>
     
 
@@ -362,6 +469,56 @@ necessary for the system router.</p>
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idForm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id of the form.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -418,6 +575,10 @@ necessary for the system router.</p>
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    <p>All form childrens values.</p>
+</div>
+
 
 
 <dl>
@@ -426,105 +587,7 @@ necessary for the system router.</p>
     </dt>
     <dd>
         
-<span class="param-type">undefined</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setRoute"><span class="type-signature"></span>setRoute()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>set the url, call lazy load controllers, and call the method defined in routes.json</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">undefined</span>
+<span class="param-type">object</span>
 
 
 
@@ -587,7 +650,7 @@ necessary for the system router.</p>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a>
 	
-		on October 7th 2016, 2:27:35 pm
+		on October 7th 2016, 2:31:15 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
