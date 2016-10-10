@@ -4,15 +4,16 @@
 */
 
 const gulp              = require('gulp');
+const babel             = require('gulp-babel');
 const browserSync       = require('browser-sync').create();
 const concat            = require('gulp-concat');
 const uglify            = require('gulp-uglify');
 const sourcemaps        = require('gulp-sourcemaps');
-const imagemin          = require('gulp-imagemin');
+// const imagemin          = require('gulp-imagemin');
+const cleanCSS          = require('gulp-clean-css');
 const clean             = require('gulp-clean');
 const gutil             = require('gulp-util');
 const useref            = require('gulp-useref');
-const babel             = require('gulp-babel');
 const jsdoc             = require('gulp-jsdoc3');
 
 /* ====================================
@@ -37,17 +38,18 @@ const optionsServer = {
   }
 };
 
-
-
 /* ====================================
   Paths
 ==================================== */
+
+'use strict';
 
 const baseSrc     = './src/';
 const baseDist    = './dist/';
 const pathsSrc    = {};
 const pathsDist   = {};
 
+pathsSrc.theme      = baseSrc + 'shell/theme/';
 pathsDist.theme     = baseDist + 'shell/theme/';
 
 pathsSrc.core       = baseSrc + 'shell/argos/**/argos*.js';
@@ -56,8 +58,8 @@ pathsDist.core      = baseDist + 'shell/argos/';
 pathsSrc.index      = baseSrc + 'index.html';
 pathsDist.index     = baseDist;
 
-pathsSrc.views       = baseSrc + 'views/**/*';
-pathsDist.views      = baseDist + 'views/';
+pathsSrc.views       = baseSrc + 'shell/theme/views/**/*';
+pathsDist.views      = baseDist + 'shell/theme/views/';
 
 pathsSrc.configFiles   = [
   './src/shell/theme/*.json',
@@ -74,6 +76,9 @@ pathsSrc.rootFiles   = [
 pathsSrc.images     = baseSrc + 'shell/styles/img/*';
 pathsDist.images    = baseDist + 'shell/styles/img/';
 
+pathsSrc.styles     = baseSrc + 'shell/theme/styles/css/**/*';
+pathsDist.styles    = baseDist + 'shell/theme/styles/';
+
 pathsSrc.mocks      = baseSrc + 'mocks/**/*.json';
 pathsDist.mocks     = baseDist + 'mocks/';
 
@@ -89,18 +94,31 @@ pathsDist.vendor    = baseDist + 'shell/vendor';
 ==================================== */
 
 gulp.task('doc', (done)=> {
+<<<<<<< HEAD
   let options = {
     "tags": {
       "allowUnknownTags": true
     },
     "opts": {
       "destination": "./docs/"
+=======
+  const options = {
+    'tags': {
+      'allowUnknownTags': true
+    },
+    'opts': {
+      "destination": './docs/'
+>>>>>>> ee91d969004d9ca2f45f912f986b655b8a417665
     }
   }
 
   gulp.src(['README.md', './src/shell/argos/**/*.js'], options)
     .pipe(jsdoc());
+<<<<<<< HEAD
   done();
+=======
+    done();
+>>>>>>> ee91d969004d9ca2f45f912f986b655b8a417665
 });
 
 /* ========================
@@ -116,7 +134,9 @@ gulp.task('doc', (done)=> {
   gulp.task('buildCore', (done)=> {
     gulp.src(pathsSrc.core)
       .pipe(sourcemaps.init())
-      .pipe(babel() )
+      .pipe(babel({
+            presets: ['es2015']
+        }))
       .pipe( concat('argos.min.js', optionsConcat) )
       .pipe( ENVIROMENT === 'production' ? uglify(optionsUglify) :  gutil.noop() )
       .pipe(sourcemaps.write('./'))
@@ -138,7 +158,10 @@ gulp.task('doc', (done)=> {
   });
 
   gulp.task('buildViews', (done)=> {
-    gulp.src(pathsSrc.views)
+    gulp.src(pathsSrc.views  + '**/*.js' )
+      .pipe(babel({
+            presets: ['es2015']
+        }))
       .pipe(gulp.dest(pathsDist.views));
      done();
   });
@@ -151,17 +174,29 @@ gulp.task('doc', (done)=> {
      done();
   });
 
+  gulp.task('buildStatics', (done)=> {
+    gulp.src('./src/shell/theme/langs/**/*.json')
+      .pipe(gulp.dest('./dist/shell/theme/langs/'));
+     done();
+  });
+
+  /* De momento va sin sass */
+  gulp.task('buildStyles', (done)=> {
+    gulp.src(pathsSrc.styles)
+      .pipe(concat('styles.css'))
+      .pipe( ENVIROMENT === 'develop' ? sourcemaps.init() :  gutil.noop() )
+      .pipe(cleanCSS())
+      .pipe(concat('styles.min.css'))
+      .pipe( ENVIROMENT === 'develop' ? sourcemaps.write() :  gutil.noop() )
+      .pipe(gulp.dest(pathsDist.styles));
+     done();
+  });
+
   gulp.task('buildVendor', (done)=> {
     gulp.src(pathsSrc.vendor)
       .pipe( concat('all-libraries.js', optionsConcat) )
       .pipe(gulp.dest(pathsDist.vendor));
     done();
-  });
-
-  gulp.task('buildImages', (done)=> {
-    gulp.src(pathsSrc.images)
-      .pipe(imagemin())
-      .pipe(gulp.dest(pathsDist.images));
   });
 
 /* ========================
@@ -176,7 +211,8 @@ gulp.task('build', gulp.series(
   'buildVendor',
   'buildConfigFiles',
   'buildMocks',
-  //'buildImages',
+  'buildStyles',
+  'buildStatics',
   (done)=> {
     done();
   }));

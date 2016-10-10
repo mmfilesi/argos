@@ -3,48 +3,32 @@
  * @description utils to work with collections (arrays and objects)
  */
 
+<<<<<<< HEAD
 'use strict';
 
 const jsonUtils = (function() {
+=======
+const jsonUtils = (function () {
+>>>>>>> ee91d969004d9ca2f45f912f986b655b8a417665
 
-  const module    = {};
-  const self      = module;
+  const module  = {};
+  const self    = module;
 
   module.copyObject = (obToCopy)=> {
     return JSON.parse(JSON.stringify(obToCopy));
   };
 
-  module.findInArray = (_array_, valueToFind)=> {
-    let i   = 0;
-    let len = _array.length;
-
-    for(; i<len; i++) {
-      if ( valueToFind === _array_[i] ) {
-        return _array_[i];
-      }
-    }
-    return false;
-  };
-
-  module.findInObject = (_array_, key, value)=> {
-    let i   = 0;
-    let len = _array_.length;
-
-    for(; i<len; i++) {
-      for (let prop in _array_[i] ) {
-        if ( prop === key && _array_[i][prop] === value ) {
-          return _array_[i];
-        }
-      }
-    }
-    return false;
-  };
-
+  module.findInObject = (_array_, key, value) => _array_.find(item => item[key] === value);
 
   return {
+<<<<<<< HEAD
     copyObject:     module.copyObject,
     findInArray:    module.findInArray,
     findInObject:   module.findInObject
+=======
+    copyObject:   module.copyObject,
+    findInObject: module.findInObject
+>>>>>>> ee91d969004d9ca2f45f912f986b655b8a417665
   };
 
 })();
