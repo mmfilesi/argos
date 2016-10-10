@@ -7,19 +7,19 @@
 
 const jsonUtils = (function () {
 
-  const module = {};
-  const self = module;
+  const module  = {};
+  const self    = module;
 
-  module.copyObject = (obToCopy) => {
+  module.copyObject = (obToCopy)=> {
     return JSON.parse(JSON.stringify(obToCopy));
   };
 
-  module.findInArray = (_array_, valueToFind) => {
-    let i = 0;
+  module.findInArray = (_array_, valueToFind)=> {
+    let i   = 0;
     let len = _array.length;
 
     for (; i < len; i++) {
-      if (valueToFind === _array_[i]) {
+      if ( valueToFind === _array_[i] ) {
         return _array_[i];
       }
     }
@@ -29,8 +29,8 @@ const jsonUtils = (function () {
   module.findInObject = (_array_, key, value) => _array_.find(item => item[key] === value);
 
   return {
-    copyObject: module.copyObject,
-    findInArray: module.findInArray,
+    copyObject:   module.copyObject,
+    findInArray:  module.findInArray,
     findInObject: module.findInObject
 
   };
