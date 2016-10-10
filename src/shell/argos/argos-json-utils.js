@@ -18,9 +18,7 @@ const jsonUtils = (function () {
 
   return {
     copyObject:   module.copyObject,
-    findInArray:  module.findInArray,
     findInObject: module.findInObject
-
   };
 
 })();
