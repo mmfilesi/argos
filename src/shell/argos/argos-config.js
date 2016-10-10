@@ -1,26 +1,56 @@
-"use strict";
+/**
+ * @namespace config
+ * @description Módulo para gestionar los datos de configuración iniciales de la aplicación, los cuales se definen en ./src/theme/config.json
+ */
 
-/*eslint-disable no-unused-vars*/
+'use strict';
+
 const config = (function() {
-/*eslint-enable no-unused-vars*/
 
   let module  = {};
   let self    = module;
 
-  module.config  = {
+  /**
+  * @memberof config#
+  * @name _configGeneral
+  * @description Objeto privado con la configuración general.
+  * @property {string} environment El entorno de trabajo: develop, production, test, etcétera.
+  * @property {string} lang El idioma por defecto (para seleccionar los textos definidos en .src/shell/theme/langs)
+  */
+  module._configGeneral  = {
 		'environment': 'develop',
 		'lang': 'en_En'
   };
 
-	module.optionsState = {
+  /**
+  * @memberof config#
+  * @name _optionsState
+  * @description Objeto privado para configurar las opciones de la navegación por estados
+  * @property {boolean} forceEntry Si debe cargarse un estado por defecto al entrar en la web.
+  * @property {string} defaultState El estado que debe cargarse por defecto.
+  */
+	module._optionsState = {
     'forceEntry': false,
     'defaultState': 'main'
 	};
 
-  module.serviceWorkers = {
+  /**
+  * @memberof config#
+  * @name _serviceWorkers
+  * @description Objeto privado para gestionar los service workers
+  * @property {boolean} active Si cargan o no.
+  */
+  module._serviceWorkers = {
     'active': false
   };
 
+  /**
+  * @memberof config#
+  * @method
+  * @name init
+  * @description Método público para cargar la configuración definida en el config.json del theme.
+  * @return {object} Devuelve una promesa.
+  */
   module.init = ()=> {
     let deferred = Q.defer();
     let urlConfig = './shell/theme/config.json';
@@ -33,7 +63,7 @@ const config = (function() {
 
     instanceRest.getResource(urlConfig).then(
       (data)=> {
-        self.initAll(data);
+        self._initAll(data);
         deferred.resolve();
       },
       (error) => {
@@ -43,10 +73,16 @@ const config = (function() {
       return deferred.promise;
   };
 
-  module.initAll = (data)=> {
-    self.config.environment     = data.generalData.environment;
-    self.config.lang            = data.generalData.lang;
-    self.serviceWorkers.active  = data.serviceWorkers.active;
+  /**
+  * @memberof config#
+  * @method
+  * @name _initAll
+  * @description Método privado para distribuir los seteos de config.json.
+  */
+  module._initAll = (data)=> {
+    self._configGeneral.environment  = data.generalData.environment;
+    self._configGeneral.lang         = data.generalData.lang;
+    self._serviceWorkers.active      = data.serviceWorkers.active;
 
     if ( data.rest.hasOwnProperty('restOptions') ) {
       restUtils.setOptionsDefault(data.rest.restOptions);
@@ -55,25 +91,53 @@ const config = (function() {
       restUtils.setSpecialCodes(data.rest.specialCodes);
     }
     if (  data.hasOwnProperty('optionsState') && data.optionsState.hasOwnProperty('forceEntry') ) {
-      self.optionsState.forceEntry    = data.optionsState.forceEntry;
-      self.optionsState.defaultState  = data.optionsState.defaultState;
+      self._optionsState.forceEntry    = data.optionsState.forceEntry;
+      self._optionsState.defaultState  = data.optionsState.defaultState;
     }
   };
 
+  /**
+  * @memberof config#
+  * @method
+  * @name getOptionsState
+  * @description Método público para recuperar las opciones de la navegación por estados.
+  * @return {object}
+  */
   module.getOptionsState = () => {
-    return self.optionsState;
+    return self._optionsState;
   };
 
+  /**
+  * @memberof config#
+  * @method
+  * @name getServiceWorkers
+  * @description Método público para recuperar las opciones relacionadas con los service workers.
+  * @return {object}
+  */
   module.getServiceWorkers = () => {
-    return self.serviceWorkers;
+    return self._serviceWorkers;
   };
 
+  /**
+  * @memberof config#
+  * @method
+  * @name getEnvironment
+  * @description Método público que devuelve el environment.
+  * @return {string}
+  */
   module.getEnvironment = ()=> {
-    return self.config.environment;
+    return self._configGeneral.environment;
   };
 
+  /**
+  * @memberof config#
+  * @method
+  * @name getLang
+  * @description Método público que devuelve el idioma definido en config.json.
+  * @return {string}
+  */
   module.getLang  = ()=> {
-    return self.config.lang;
+    return self._configGeneral.lang;
   };
 
   return {

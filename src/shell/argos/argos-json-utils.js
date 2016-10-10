@@ -1,9 +1,9 @@
-'use strict';
-
 /**
  * @namespace jsonUtils
  * @description utils to work with collections (arrays and objects)
  */
+
+'use strict';
 
 const jsonUtils = (function() {
 
@@ -45,7 +45,6 @@ const jsonUtils = (function() {
     copyObject:     module.copyObject,
     findInArray:    module.findInArray,
     findInObject:   module.findInObject
-
   };
 
 })();

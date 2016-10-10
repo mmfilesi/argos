@@ -87,43 +87,20 @@ pathsDist.vendor    = baseDist + 'shell/vendor';
 /* ====================================
   Tasks
 ==================================== */
-	//Whatever build process' go here.
-//   var jsdoc = require('gulp-jsdoc');
-//   gulp.src("./src/*.js").pipe(jsdoc("./documentation"));//Simply building docs
-
-
 
 gulp.task('doc', (done)=> {
-    var options = {
-  "tags": {
-    "allowUnknownTags": true
-  },
-  "opts": {
-    "destination": "./docs/"
-  }
-}
-/*
-,
-  "plugins": [
-    "plugins/markdown"
-  ],
-  "templates": {
-    "cleverLinks": false,
-    "monospaceLinks": false,
-    "default": {
-      "outputSourceFiles": true
+  let options = {
+    "tags": {
+      "allowUnknownTags": true
     },
-    "path": "ink-docstrap",
-    "theme": "cerulean",
-    "navType": "vertical",
-    "linenums": true,
-    "dateFormat": "MMMM Do YYYY, h:mm:ss a"
+    "opts": {
+      "destination": "./docs/"
+    }
   }
-  */
 
   gulp.src(['README.md', './src/shell/argos/**/*.js'], options)
     .pipe(jsdoc());
-   done();
+  done();
 });
 
 /* ========================

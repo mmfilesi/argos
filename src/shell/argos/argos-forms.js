@@ -1,10 +1,10 @@
-'use strict';
-
 /**
  * @namespace forms
- * @description module for work with forms.
- * todo: show error server
+ * @description Este módulo permite trabajar con formularios.
  */
+
+'use strict';
+
 const forms = (function() {
 
   const module    = {};
@@ -18,10 +18,10 @@ const forms = (function() {
   * @memberof forms#
   * @method
   * @name getValues
-  * @param {string} idForm - The id of the form.
-  * @return {object} All form childrens values.
-  * @description return pair key-value for each input.
-  * The inputs need have the class 'js-itemForm' and, recommended, an atribute called 'data-key'.
+  * @param {string} idForm El id del formulario.
+  * @return {object}
+  * @description Devuelve todos los valores de los campos del formulario.
+  * Los campos deben tener la clase 'js-itemForm' y, recomendado, un atributo llamado 'data-key'. Si no lo tiene, usa el name y tampoco tiene este, la posición del nodo relativa al formulario.
   * @example:
   *  ```html
     <input type="text" name="inputText" class="js-itemForm" data-key="inputText">
@@ -59,8 +59,9 @@ const forms = (function() {
   * @memberof forms#
   * @method
   * @name getValue
-  * @param {string | object} _node_ - The id element or the element of form.
-  * @return {string |array} The form element value.
+  * @description Recupera el valor del elemento. Si es un select múltiple, devuelve un array, sino, un string.
+  * @param {string | object} _node_ - El id o el propio elemento (campo) de un formulario.
+  * @return {string |array}
   */
   module.getValue = (_node_)=> {
     let node     = typeof _node_ === 'string' ? document.getElementById(idNode) : _node_;
@@ -100,6 +101,7 @@ const forms = (function() {
   * @memberof forms#
   * @method
   * @name _getMultiSelectValues
+  * @description Método privado para recuperar los valores de un multiselect.
   * @param {object} _node_ - The element multi-select of form.
   * @return {array} The multi-select value.
   */
@@ -120,26 +122,70 @@ const forms = (function() {
       utils
   ==================================================== */
 
+  /**
+  * @memberof forms#
+  * @method
+  * @name enabled
+  * @description Habilita el campo de un formulario.
+  * @param {string} idNode El id del campo.
+  * @return {undefined}
+  */
   module.enabled = (idNode)=> {
     self._setEnabled(idNode, false);
   };
 
+  /**
+  * @memberof forms#
+  * @method
+  * @name disabled
+  * @description Deshabilita el campo de un formulario.
+  * @param {string} idNode El id del campo.
+  * @return {undefined}
+  */
   module.disabled = (idNode)=> {
     self._setEnabled(idNode, true);
   };
 
+  /**
+  * @memberof forms#
+  * @method
+  * @name _setEnabled
+  * @description Método privado para habilitar o deshabilitar un campo.
+  */
   module._setEnabled = (idNode, enab)=> {
     document.getElementById(idNode).setAttribute('disabled', enab);
   };
 
+  /**
+  * @memberof forms#
+  * @method
+  * @name required
+  * @description Añade el requisito required a un campo.
+  * @param {string} idNode El id del campo.
+  * @return {undefined}
+  */
   module.required = (idNode)=> {
     self._setRequired(idNode, 'required');
   };
 
+  /**
+  * @memberof forms#
+  * @method
+  * @name notRequired
+  * @description Elimina el requisito required de un campo.
+  * @param {string} idNode El id del campo.
+  * @return {undefined}
+  */
   module.notRequired = (idNode)=> {
     self._setRequired(idNode, false);
   };
 
+  /**
+  * @memberof forms#
+  * @method
+  * @name _setRequired
+  * @description Método privado para gestionar que un campo sea o no requerido.
+  */
   module._setRequired = (idNode, req)=> {
     document.getElementById(idNode).setAttribute('data-required', req);
   };
@@ -148,6 +194,15 @@ const forms = (function() {
       validity checks
   ==================================================== */
 
+/**
+  * @memberof forms#
+  * @method
+  * @name required
+  * @description Comprueba si los valores de los campos de un formulario se ajustan a los requisitos definidos en los atributos.
+  * Añade de forma automática un mensaje con el error de cada campo.
+  * @param {string} idNode El id del formulario a comprobar.
+  * @return {boolean} true o false si es válido o no.
+  */
   module.isValid = (idForm)=> {
     let nodes       = document.querySelectorAll('#'+idForm + ' .js-itemForm');
     let i           = 0;
@@ -168,7 +223,7 @@ const forms = (function() {
     return isValid;
   };
 
-  /* No le paso los nodos para que se pueda usar como método de forma independiente */
+
   module.resetErrors = (idForm)=> {
     let nodes = document.querySelectorAll('#'+idForm + ' .js-itemForm');
     let i     = 0;
