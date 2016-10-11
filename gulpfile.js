@@ -94,31 +94,18 @@ pathsDist.vendor    = baseDist + 'shell/vendor';
 ==================================== */
 
 gulp.task('doc', (done)=> {
-<<<<<<< HEAD
-  let options = {
-    "tags": {
-      "allowUnknownTags": true
-    },
-    "opts": {
-      "destination": "./docs/"
-=======
   const options = {
     'tags': {
       'allowUnknownTags': true
     },
     'opts': {
       "destination": './docs/'
->>>>>>> ee91d969004d9ca2f45f912f986b655b8a417665
     }
   }
 
   gulp.src(['README.md', './src/shell/argos/**/*.js'], options)
     .pipe(jsdoc());
-<<<<<<< HEAD
   done();
-=======
-    done();
->>>>>>> ee91d969004d9ca2f45f912f986b655b8a417665
 });
 
 /* ========================
