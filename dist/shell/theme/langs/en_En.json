@@ -1,7 +1,0 @@
-{
-  "ok": "thats works",
-  "formValidations": {
-    "isRequired": "Obligatory field",
-    "wrongFormat": "Incorrect format"
-  }
-}
