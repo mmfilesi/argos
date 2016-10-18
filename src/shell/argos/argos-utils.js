@@ -1,22 +1,15 @@
-/**
- * @namespace utils
- * @description La idea es que este módulo vaya creciendo con utilidades generales.
- */
-
 'use strict';
+
+/**
+ * @namespace utilsJson
+ * @description utils to work with collections (arrays and objects)
+ */
 
 const utils = (function() {
 
   const module    = {};
   const self      = module;
 
-  /**
-  * @memberof utils#
-  * @method
-  * @name viewPort
-  * @description Devuelve el navegador del cliente: isAndroid, isiOS, isFirefox,isMobile
-  * @return {object}
-  */
   module.viewPort = ()=> {
     let isAndroid = navigator.userAgent.match(/Android/i) !== null;
     let isiOS     = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)/i) !== null;
@@ -32,8 +25,17 @@ const utils = (function() {
     return getNavigator;
   };
 
+ //recupera el valor de un param recibido por GET
+  module.getParam = function(name){
+    let regExp = new RegExp('[\&|\?]'+name+'=([^\&\#]+)');
+    let param  = window.location.search.match(regExp);
+
+    return param ? param[1]:  '';
+  };
+
   return {
-    viewPort: module.viewPort
+    viewPort: module.viewPort,
+    getParam: module.getParam
   };
 
 })();
