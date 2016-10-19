@@ -97,8 +97,8 @@ const globals = (function() {
     let prefix      = data.generalData.baseUrl[environment];
     let suffix      = data.generalData.type[environment];
 
-    for (let prop in data.endPoints) {
-      self.allEndPoints[prop] = prefix + data.endPoints[prop] + suffix;
+    for (let prop in data.endPoints[environment]) {
+      self.allEndPoints[prop] = prefix + data.endPoints[environment][prop] + suffix;
     }
 
   };
