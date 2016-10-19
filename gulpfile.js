@@ -1,12 +1,17 @@
 'use strict';
 
+/* todos:
+  sass
+  el imagemin no chufla
+*/
+
 const gulp              = require('gulp');
 const babel             = require('gulp-babel');
 const browserSync       = require('browser-sync').create();
 const concat            = require('gulp-concat');
 const uglify            = require('gulp-uglify');
 const sourcemaps        = require('gulp-sourcemaps');
-//const imagemin          = require('gulp-imagemin');
+// const imagemin          = require('gulp-imagemin');
 const cleanCSS          = require('gulp-clean-css');
 const clean             = require('gulp-clean');
 const gutil             = require('gulp-util');
@@ -39,37 +44,53 @@ const optionsServer = {
   Paths
 ==================================== */
 
+'use strict';
+
 const baseSrc     = './src/';
 const baseDist    = './dist/';
 const pathsSrc    = {};
 const pathsDist   = {};
 
+pathsSrc.theme      = baseSrc + 'shell/theme/';
+pathsDist.theme     = baseDist + 'shell/theme/';
 
-pathsSrc.shell       = baseSrc + 'shell/';
-pathsDist.shell      = baseDist + 'shell/';
+pathsSrc.core       = baseSrc + 'shell/argos/**/argos*.js';
+pathsDist.core      = baseDist + 'shell/argos/';
 
-pathsSrc.theme      = pathsSrc.shell + 'theme/';
-pathsDist.theme     = pathsDist.shell + 'theme/';
-
-pathsSrc.core       = pathsSrc.shell + 'argos/**/argos*.js';
-pathsDist.core      = pathsDist.shell + 'argos/';
+pathsSrc.index      = baseSrc + 'index.html';
+pathsDist.index     = baseDist;
 
 pathsSrc.views       = baseSrc + 'shell/theme/views/**/*';
 pathsDist.views      = baseDist + 'shell/theme/views/';
 
+pathsSrc.conFiles   = baseSrc + 'shell/theme/*.json';
+pathsDist.conFiles  = baseDist + 'shell/theme/';
+
 pathsSrc.rootFiles   = [
-  './src/favicon.ico',
   './src/robots.txt',
+  './src/humans.txt',
   './src/license.txt',
-  './src/sw.js'
+  './src/sw.js',
+  './src/favicon.ico',
+  './src/crossdomain.xml',
+  './src/404.html',
+  './src/.htaccess'
 ];
 
-/* Añadir aquí todas las librerías vendor estrictamente necesarias
-para que funcione la aplicación  nada más cargar (el resto, por lazy load en app.js) */
+pathsSrc.images     = baseSrc + 'shell/styles/img/*';
+pathsDist.images    = baseDist + 'shell/styles/img/';
+
+pathsSrc.styles     = baseSrc + 'shell/theme/styles/css/**/*';
+pathsDist.styles    = baseDist + 'shell/theme/styles/';
+
+pathsSrc.mocks      = baseSrc + 'mocks/**/*.json';
+pathsDist.mocks     = baseDist + 'mocks/';
+
 pathsSrc.vendor     = [
-  pathsSrc.shell + 'vendor/q/q.js',
-  pathsSrc.shell + 'vendor/handlebars/handlebars.js'
+  './src/shell/vendor/q/q.js'
 ];
+
+pathsDist.vendor    = baseDist + 'shell/vendor';
 
 /* ====================================
   Tasks
@@ -94,29 +115,13 @@ gulp.task('doc', (done)=> {
   task - builder
 ======================== */
 
-/* Separamos los task del builder en tres grupos:
-- los archivos "estáticos" que en teoría apenas cambian a lo largo del desarrollo (ie, vendor)
-- los estilos
-- los js
-De esta manera, se puede jugar en el watcher para aliviar el proceso */
-
-gulp.task('buildStatics', (done)=> {
-
-  /* librerías vendor :: esto al final lo hacemos con el useref */
-  // gulp.src( pathsSrc.vendor )
-  //   .pipe( concat('all-libraries.js', optionsConcat) )
-  //   .pipe(gulp.dest(baseDist + 'shell/vendor'));
-
-    if ( ENVIROMENT !== 'production' ) {
-      gulp.src(baseSrc + 'mocks/**/*.json')
-        .pipe(gulp.dest(baseDist + 'mocks/'));
-    }
-
-    /* configuración general */
-    gulp.src(pathsSrc.rootFiles)
+  gulp.task('buildRootFiles', (done)=> {
+      gulp.src(pathsSrc.rootFiles)
       .pipe(gulp.dest(baseDist));
+      done();
+  });
 
-    /* core */
+  gulp.task('buildCore', (done)=> {
     gulp.src(pathsSrc.core)
       .pipe(sourcemaps.init())
       .pipe(babel({
@@ -126,18 +131,35 @@ gulp.task('buildStatics', (done)=> {
       .pipe( ENVIROMENT === 'production' ? uglify(optionsUglify) :  gutil.noop() )
       .pipe(sourcemaps.write('./'))
       .pipe( gulp.dest(pathsDist.core) );
+      done()
+  });
 
-    /* Archivos de configuración del tema */
-    gulp.src(pathsSrc.theme + '*.json')
-      .pipe(gulp.dest(pathsDist.theme));
+  gulp.task('buildIndex', (done)=> {
+      gulp.src(pathsSrc.index)
+      .pipe(useref())
+      .pipe(gulp.dest(pathsDist.index));
+      done();
+  });
 
-  done();
-});
+  gulp.task('buildConfigFiles', (done)=> {
+    gulp.src(pathsSrc.conFiles)
+      .pipe(gulp.dest(pathsDist.conFiles));
+     done();
+  });
 
-gulp.task('buildTheme', (done)=> {
-  let themeSources = [baseSrc + 'shell/theme/*.js', baseSrc + 'shell/theme/models/**/*.js'];
+  gulp.task('buildTheme', (done)=> {
+    gulp.src(pathsSrc.views  + '**/*.js' )
+      .pipe(babel({
+            presets: ['es2015']
+        }))
+      .pipe(gulp.dest(pathsDist.views));
 
-    gulp.src(themeSources)
+    gulp.src(pathsSrc.views  + '**/*.html' )
+      .pipe(gulp.dest(pathsDist.views));
+
+    let themeSources = [baseSrc + 'shell/theme/*.js', baseSrc + 'shell/theme/models/**.*.js'];
+
+    gulp.src(pathsSrc.theme  + '**/*.js' )
      .pipe(sourcemaps.init())
       .pipe(babel({
             presets: ['es2015']
@@ -147,56 +169,73 @@ gulp.task('buildTheme', (done)=> {
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest(pathsDist.theme));
 
-    gulp.src(pathsSrc.views  + '**/*.html' )
-      .pipe(gulp.dest(pathsDist.views));
+    done();
+  });
 
-    gulp.src(pathsSrc.theme + 'langs/**/*.json')
-      .pipe(gulp.dest(pathsDist.theme + 'langs/'));
+  gulp.task('buildModels', (done)=> {
+    gulp.src('./src/shell/theme/models/**/*.js')
+      .pipe(gulp.dest('./dist/shell/theme/models/'));
+     done();
+  });
 
-  done();
-});
+  gulp.task('buildMocks', (done)=> {
+    if ( ENVIROMENT !== 'production' ) {
+      gulp.src('./src/mocks/**/*.json')
+        .pipe(gulp.dest('./dist/mocks/'));
+    }
+     done();
+  });
+
+  gulp.task('buildStatics', (done)=> {
+    gulp.src('./src/shell/theme/langs/**/*.json')
+      .pipe(gulp.dest('./dist/shell/theme/langs/'));
+     done();
+  });
 
   /* De momento va sin sass */
   gulp.task('buildStyles', (done)=> {
-    gulp.src(pathsSrc.theme + 'styles/css/**/*.css')
+    gulp.src(pathsSrc.styles)
       .pipe(concat('styles.css'))
       .pipe( ENVIROMENT === 'develop' ? sourcemaps.init() :  gutil.noop() )
       .pipe(cleanCSS())
       .pipe(concat('styles.min.css'))
       .pipe( ENVIROMENT === 'develop' ? sourcemaps.write() :  gutil.noop() )
-      .pipe(gulp.dest(pathsDist.theme + 'styles/'));
+      .pipe(gulp.dest(pathsDist.styles));
 
-      gulp.src(pathsSrc.theme + 'styles/img/**/*.*')
-      .pipe(gulp.dest(pathsDist.theme + 'styles/img'));
+      gulp.src('./src/shell/theme/styles/img/**/*.*')
+      .pipe(gulp.dest('./dist/shell/theme/styles/img')); 
 
       done();
   });
 
-  /* El index hay que separarlo, ya que el useref reemplazaría los archivos transpilados
-  por los originales */
-  gulp.task('buildIndex', (done)=> {
-      // gulp.src(baseSrc + 'index.html')
-      // .pipe(useref())
-      // .pipe(gulp.dest(baseDist));
-      // done();
+  gulp.task('buildVendor', (done)=> {
+    gulp.src(pathsSrc.vendor)
+      .pipe( concat('all-libraries.js', optionsConcat) )
+      .pipe(gulp.dest(pathsDist.vendor));
+    done();
   });
 
 /* ========================
-  task - builder
+  #task - builder
 ======================== */
 
 gulp.task('clean', (done)=> {
-  gulp.src(baseDist + '*', {read: false})
+  gulp.src(baseDist + '/*', {read: false})
     .pipe(clean());
   done();
 });
 
 gulp.task('build', gulp.series(
-  'clean',
- // 'buildIndex',
-  'buildStatics',
+  'buildRootFiles',
+  'buildCore',
+  'buildIndex',
   'buildTheme',
+  'buildVendor',
+  'buildConfigFiles',
+  'buildMocks',
+  'buildModels',
   'buildStyles',
+  'buildStatics',
   (done)=> {
     done();
   }));
