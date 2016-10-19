@@ -139,8 +139,31 @@ const views = (function() {
     }, 10);
   };
 
+
+  module.loadNonStateTemplates = (template)=> {
+    let req = new XMLHttpRequest();
+    let templatePath = './shell/theme/views/' +  template + '.html';
+    let deferred = Q.defer()
+
+    req.open('GET', templatePath, true);
+
+    req.onreadystatechange = function() {
+      let templateScript;
+      if (req.readyState === 4 && req.status === 200) {
+        templateScript = document.createElement('div');
+        templateScript.innerHTML = req.responseText;
+        document.getElementById('argos-templates-container').appendChild(templateScript);
+        deferred.resolve();
+      }
+    };
+
+    req.send();
+    return deferred.promise;
+  };
+
   return {
-    loadView: module.loadView
+    loadView: module.loadView,
+    loadNonStateTemplates: module.loadNonStateTemplates
   };
 
 } )();
