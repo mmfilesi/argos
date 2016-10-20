@@ -143,21 +143,19 @@ const restUtils = (function() {
     self.codes = specialCodes;
   };
 
-  /* todo: preparar una alternativa no polymer */
   module.showPreloader = function() {
-    let node = document.getElementById('js-mainPreload');
+    let preload = document.getElementById('js-mainPreload');
 
-    if ( node ) {
-      node.setAttribute('show', 'show');
+    if ( preload ) {
+      preload.style.visibility = "visible";
     }
   };
 
-  /* todo: preparar una alternativa no polymer */
   module.hidePreloader = function() {
-    let node = document.getElementById('js-mainPreload');
+    let preload = document.getElementById('js-mainPreload');
 
-    if ( node ) {
-      node.setAttribute('show', 'hidden');
+    if ( preload  ) {
+      preload.style.visibility = "hidden";
     }
   };
 
@@ -174,7 +172,7 @@ const restUtils = (function() {
     prepareResponse:    module.prepareResponse,
     showPreloader:      module.showPreloader,
     hidePreloader:      module.hidePreloader,
-    showErrorServer:    module.showErrorServer
+    showErrorServer:    module.showErrorServer,
   };
 
 })();
