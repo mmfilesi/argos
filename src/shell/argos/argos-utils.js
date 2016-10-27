@@ -33,9 +33,17 @@ const utils = (function() {
     return param ? param[1]:  '';
   };
 
+  //formatea una tarjeta de crédito que llegue sin guiones
+  module.formatCard = function(number){
+    if(number){
+      return number.toString().match(/\d{1,4}/g).join('-');
+    }
+  };
+
   return {
     viewPort: module.viewPort,
-    getParam: module.getParam
+    getParam: module.getParam,
+    formatCard: module.formatCard
   };
 
 })();
