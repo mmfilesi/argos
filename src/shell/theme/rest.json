@@ -14,6 +14,20 @@
     }
   },
   "endPoints": {
-    "getCapital": "countries"
+    "mock":{
+      "getCapital": "countries"
+    },
+    "develop":{
+      "getCapital": "countries"
+    },
+    "production":{
+      "getCapital": "countries"
+    },
+    "unitTest":{
+      "getCapital": "countries"
+    },
+    "e2eTest":{
+      "getCapital": "countries"
+    }
   }
 }
