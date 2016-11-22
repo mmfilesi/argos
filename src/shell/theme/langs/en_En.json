@@ -2,6 +2,7 @@
   "ok": "thats works",
   "formValidations": {
     "isRequired": "Obligatory field",
-    "wrongFormat": "Incorrect format"
+    "wrongFormat": "Incorrect format",
+    "notDocument":"Invalid document"
   }
 }

@@ -262,6 +262,9 @@ const forms = (function() {
         return self._checkIsString(node);
       case 'isEmail':
       return self._checkIsEmail(node);
+      case 'isDocument':
+        return self._checkIsDocument(node);
+        break;
       default:
         return true;
     }
@@ -315,6 +318,39 @@ const forms = (function() {
     return isValid;
   };
 
+  module._checkIsDocument = (node)=> {
+    var isValid = true,
+      number, letter,
+      charString = 'TRWAGMYFPDXBNJZSQVHLCKET',
+      expr = /^[XYZ]?\d{5,8}[A-Z]$/,
+      value = $(node).val();
+
+    value = value.toUpperCase();
+
+    if (value.length > 0) {
+
+      if (!expr.test(value)) {
+        isValid = false;
+      } else {
+        number = value.substr(0, value.length - 1);
+        number = number.replace('X', 0);
+        number = number.replace('Y', 1);
+        number = number.replace('Z', 2);
+        letter = value.substr(value.length - 1, 1);
+        number = number % 23;
+        charString = charString.substring(number, number + 1);
+
+        letter !== charString ? isValid = false : isValid = true;
+      }
+
+      if (!isValid) {
+        module.addError(node, 'notDocument');
+      }
+    }
+
+    return isValid;
+  };
+
   module.customValidation = (node)=> {
     let isValid = true;
     let rule    = node.getAttribute('data-regex') ? new RegExp(node.getAttribute('data-regex'), 'i') : false;
@@ -340,6 +376,10 @@ const forms = (function() {
       case 'required':
         errorString = globals.getTexts().formValidations.isRequired;
         break;
+      case 'notDocument':
+        errorString = globals.getTexts().formValidations.notDocument;
+        break;
+      break;
       default:
         errorString = globals.getTexts().formValidations.wrongFormat;
     }
